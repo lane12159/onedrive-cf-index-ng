@@ -57,9 +57,9 @@ export async function requestTokenWithAuthCode(
 
   // Construct URL parameters for OAuth2
   const params = new URLSearchParams()
-  params.append('client_id', clientId)
+  params.append('client_id', process.env.CLIENT_ID || '')
   params.append('redirect_uri', redirectUri)
-  params.append('client_secret', clientSecret)
+  params.append('client_secret', process.env.CLIENT_SECRET || '')
   params.append('code', code)
   params.append('grant_type', 'authorization_code')
 
