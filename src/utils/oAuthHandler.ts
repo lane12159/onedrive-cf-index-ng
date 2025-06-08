@@ -63,6 +63,8 @@ export async function requestTokenWithAuthCode(
   params.append('code', code)
   params.append('grant_type', 'authorization_code')
 
+
+  console.log(params)
   // Request access token
   return axios
     .post(authApi, params, {
