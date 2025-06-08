@@ -197,7 +197,8 @@ export async function getServerSideProps({ query }) {
   }
 
   const response = await requestTokenWithAuthCode(authCode)
-
+  console.log(response)
+  
   // If error response, return invalid
   if ('error' in response) {
     return {
@@ -213,6 +214,10 @@ export async function getServerSideProps({ query }) {
 
   // verify identity of the authenticated user with the Microsoft Graph API
   const { data, status } = await getAuthPersonInfo(accessToken)
+
+    console.log(status)
+    console.log(data)
+
   if (status !== 200) {
     return {
       props: {
@@ -230,6 +235,10 @@ export async function getServerSideProps({ query }) {
     }
   }
 
+  
+    console.log(expiryTime)
+    console.log(accessToken)
+    console.log(refreshToken)
   return {
     props: {
       error: null,
