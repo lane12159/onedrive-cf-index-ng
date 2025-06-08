@@ -9,6 +9,9 @@
     "lint": "next lint",
     "format": "prettier 'src/**/*.{js,ts,jsx,tsx}' --write"
   },
+  "engines": {
+    "node": "== 20"
+  },
   "dependencies": {
     "@cloudflare/workers-types": "^4.20250408.0",
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
