@@ -12,7 +12,6 @@ import { NextRequest, NextResponse } from 'next/server'
 export const runtime = 'edge'
 
 const basePath = pathPosix.resolve('/', siteConfig.baseDirectory)
-const clientSecret = revealObfuscatedToken(apiConfig.obfuscatedClientSecret)
 
 /**
  * Encode the path of the file relative to the base directory
@@ -53,7 +52,7 @@ export async function getAccessToken(): Promise<string> {
   const body = new URLSearchParams()
   body.append('client_id', apiConfig.clientId)
   body.append('redirect_uri', apiConfig.redirectUri)
-  body.append('client_secret', clientSecret)
+  body.append('client_secret', process.env.CLIENT_SECRET)
   body.append('refresh_token', refreshToken)
   body.append('grant_type', 'refresh_token')
 
