@@ -53,13 +53,12 @@ export async function requestTokenWithAuthCode(
   | { error: string; errorDescription: string; errorUri: string }
 > {
   const { clientId, redirectUri, authApi } = apiConfig
-  const clientSecret = apiConfig.clientSecret
 
   // Construct URL parameters for OAuth2
   const params = new URLSearchParams()
   params.append('client_id', clientId)
   params.append('redirect_uri', redirectUri)
-  params.append('client_secret', clientSecret)
+  params.append('client_secret', process.env.CLIENT_SECRET)
   params.append('code', code)
   params.append('grant_type', 'authorization_code')
 
