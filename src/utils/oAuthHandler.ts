@@ -55,10 +55,14 @@ export async function requestTokenWithAuthCode(
   const { clientId, redirectUri, authApi } = apiConfig
 
   // Construct URL parameters for OAuth2
+  const clientSecret = process.env.CLIENT_SECRET;
+  if (clientSecret === undefined) {
+      throw new Error("CLIENT_SECRET environment variable is not set.");
+  }
   const params = new URLSearchParams()
   params.append('client_id', clientId)
   params.append('redirect_uri', redirectUri)
-  params.append('client_secret', process.env.CLIENT_SECRET)
+  params.append('client_secret', clientSecret)
   params.append('code', code)
   params.append('grant_type', 'authorization_code')
 
