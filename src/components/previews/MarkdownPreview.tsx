@@ -29,6 +29,25 @@ const MarkdownPreview: FC<{
   const isUrlAbsolute = (url: string | string[]) => url.indexOf('://') > 0 || url.indexOf('//') === 0
   // Custom renderer:
   const customRenderer = {
+        a: ({ node, href, children, ...props }) => {
+          const isMagnet = href?.startsWith('magnet:'); // 检查是否为磁力链接
+          return (
+            <a
+              href={href}
+              style={{
+                color: isMagnet ? '#ff6600' : 'inherit', // 磁力链接显示为橙色
+                fontWeight: isMagnet ? 'bold' : 'normal',
+                textDecoration: 'underline',
+              }}
+              target="_blank"   // 可选：新标签页打开
+              rel="noopener noreferrer"
+              {...props}
+            >
+              {isMagnet && '🔗 '} {/* 可选：添加磁力链接图标 */}
+              {children}
+            </a>
+          );
+        },
     // img: to render images in markdown with relative file paths
     img: ({
       alt,
