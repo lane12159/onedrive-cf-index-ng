@@ -15,6 +15,22 @@ import Loading from '../Loading'
 import DownloadButtonGroup from '../DownloadBtnGtoup'
 import { DownloadBtnContainer, PreviewContainer } from './Containers'
 
+
+function remarkMagnetLinks() {
+  return (tree) => {
+    visit(tree, 'link', (node) => {
+      if (node.url?.startsWith('magnet:')) {
+        // 添加自定义属性（会被传递给 React 组件）
+        node.data = node.data || {};
+        node.data.hProperties = {
+          className: 'magnet-link', // 添加 CSS 类名
+          'data-magnet': 'true',    // 可选：添加 data 属性
+        };
+      }
+    });
+  };
+}
+
 const MarkdownPreview: FC<{
   file: any
   path: string
@@ -30,25 +46,6 @@ const MarkdownPreview: FC<{
   // Custom renderer:
   const customRenderer = {
     //magnet
-        a: ({ node, href, children, ...props }) => {
-          const isMagnet = href?.startsWith('magnet:'); // 检查是否为磁力链接
-          return (
-            <a
-              href={href}
-              style={{
-                color: isMagnet ? '#ff6600' : 'inherit', // 磁力链接显示为橙色
-                fontWeight: isMagnet ? 'bold' : 'normal',
-                textDecoration: 'underline',
-              }}
-              target="_blank"   // 可选：新标签页打开
-              rel="noopener noreferrer"
-              {...props}
-            >
-              {isMagnet && '🔗 '} {/* 可选：添加磁力链接图标 */}
-              {children}
-            </a>
-          );
-        },
     // img: to render images in markdown with relative file paths
     img: ({
       alt,
@@ -134,7 +131,7 @@ const MarkdownPreview: FC<{
           {/* Using rehypeRaw to render HTML inside Markdown is potentially dangerous, use under safe environments. (#18) */}
           <ReactMarkdown
             // @ts-ignore
-            remarkPlugins={[remarkGfm, remarkMath]}
+            remarkPlugins={[remarkGfm, remarkMath, remarkMagnetLinks]}
             // The type error is introduced by caniuse-lite upgrade.
             // Since type errors occur often in remark toolchain and the use is so common,
             // ignoring it shoudld be safe enough.
